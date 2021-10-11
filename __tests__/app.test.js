@@ -52,5 +52,20 @@ describe('app routes', () => {
     
       expect(data.body).toEqual(expectation);
     });
-  });
+
+    // Get all Everyone
+    test('returns all todos', async() => {
+
+      const expectation = [
+        { 'completed': false, 'id': 1, 'owner_id': 2, 'todo': 'ride bike' }
+      ];      
+      
+      const data = await fakeRequest(app)
+        .get('/api/todos')
+        .expect('Content-Type', /json/)
+        .set('Authorization', token)
+        .expect(200);
+      expect(data.body).toEqual(expectation);  
+    });
+  });  
 });
