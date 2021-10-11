@@ -10,7 +10,7 @@ describe('app routes', () => {
   describe('routes', () => {
     let token;
   
-    beforeAll(async done => {
+    beforeAll(async() => {
       execSync('npm run setup-db');
   
       client.connect();
@@ -22,43 +22,34 @@ describe('app routes', () => {
           password: '1234'
         });
       
-      token = signInData.body.token; // eslint-disable-line
-  
-      return done();
-    });
+        token = signInData.body.token; // eslint-disable-line
+    }, 10000);
+
   
     afterAll(done => {
       return client.end(done);
     });
 
-    test('returns todos', async() => {
+    // Post Todo
+    test('Posts a todo', async() => {
+      const expectation = [{
+        id: expect.any(Number),
+        todo: 'ride bike',
+        completed: false,
+        owner_id: expect.any(Number)
+      }];
 
-      const expectation = [
-        {
-          'id': 1,
-          'name': 'bessie',
-          'coolfactor': 3,
-          'owner_id': 1
-        },
-        {
-          'id': 2,
-          'name': 'jumpy',
-          'coolfactor': 4,
-          'owner_id': 1
-        },
-        {
-          'id': 3,
-          'name': 'spot',
-          'coolfactor': 10,
-          'owner_id': 1
-        }
-      ];
-
+      const newTodo = {
+        todo: 'ride bike'
+      };
+    
       const data = await fakeRequest(app)
-        .get('/todos')
+        .post('/api/todos')
+        .send(newTodo)
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
-
+    
       expect(data.body).toEqual(expectation);
     });
   });
