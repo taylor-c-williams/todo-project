@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, main, dev ]
   pull_request:
-    branches: [ master, dev ]
+    branches: [ master, main, dev ]
 
 jobs:
   build:
@@ -21,4 +21,4 @@ jobs:
     - run: npm test
       env:
         CI: true
-        DATABASE_URL: postgres://iljapgoilfxvdc:a5617ea3328a6e439b09da8b528d52bf9d443ada0d6d8a809c44810485826fd0@ec2-34-199-15-136.compute-1.amazonaws.com:5432/d4ii30ltdnksrj
+        DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
