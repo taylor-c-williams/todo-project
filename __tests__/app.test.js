@@ -13,7 +13,7 @@ describe('app routes', () => {
     beforeAll(async() => {
       execSync('npm run setup-db');
   
-      client.connect();
+      await client.connect();
   
       const signInData = await fakeRequest(app)
         .post('/auth/signup')
@@ -23,7 +23,7 @@ describe('app routes', () => {
         });
       
        token = signInData.body.token; // eslint-disable-line
-    }, 100000);
+    }, 10000);
      
   
     afterAll(done => {
