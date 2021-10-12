@@ -32,12 +32,14 @@ describe('app routes', () => {
 
     // Post Todo
     test('Posts a todo', async() => {
-      const expectation = [{
-        id: expect.any(Number),
-        todo: 'ride bike',
-        completed: false,
-        owner_id: expect.any(Number)
-      }];
+      const expectation = [
+        {
+          id: expect.any(Number),
+          todo: 'ride bike',
+          completed: false,
+          owner_id: expect.any(Number)
+        }
+      ];
 
       const newTodo = {
         todo: 'ride bike'
@@ -54,14 +56,41 @@ describe('app routes', () => {
     });
 
     // Get all Everyone
-    test('returns all todos', async() => {
+    test('Returns all todos', async() => {
 
       const expectation = [
-        { 'completed': false, 'id': 1, 'owner_id': 2, 'todo': 'ride bike' }
+        { 
+          'completed': false, 
+          'id': expect.any(Number), 
+          'owner_id': expect.any(Number),
+          'todo': 'ride bike' 
+        }
       ];      
       
       const data = await fakeRequest(app)
         .get('/api/todos')
+        .expect('Content-Type', /json/)
+        .set('Authorization', token)
+        .expect(200);
+      expect(data.body).toEqual(expectation);  
+    });
+
+    // Update To Do
+    test('Edit To Do', async() => {
+
+      const expectation = [
+        { 'completed': true, 
+          'id': expect.any(Number), 
+          'owner_id': expect.any(Number),
+          'todo': 'ride bike' }
+      ]; 
+      const update = {
+        completed: 'true'
+      };      
+          
+      const data = await fakeRequest(app)
+        .put('/api/todos/1')
+        .send(update)
         .expect('Content-Type', /json/)
         .set('Authorization', token)
         .expect(200);
