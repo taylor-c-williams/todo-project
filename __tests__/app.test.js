@@ -10,7 +10,7 @@ describe('app routes', () => {
   describe('routes', () => {
     let token;
   
-    beforeAll(async done => {
+    beforeAll(async() => {
       execSync('npm run setup-db');
   
       client.connect();
@@ -22,9 +22,9 @@ describe('app routes', () => {
           password: '1234'
         });
       
-        token = signInData.body.token; // eslint-disable-line
-      return done;
-
+       token = signInData.body.token; // eslint-disable-line
+    }, 100000);
+     
   
     afterAll(done => {
       return client.end(done);
